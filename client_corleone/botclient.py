@@ -19,7 +19,7 @@ class BotClient:
 
         while True:
             try:
-                raw_updates = requests.get(f'{self.token}/getUpdates?offset={offset}').json()
+                raw_updates = requests.get(f'{self.bot_url}/getUpdates?offset={offset}').json()
                 if not raw_updates.get('ok'):
                     logger.error('Updates NOK')
                     raise ConnectionError('Updates NOK')
@@ -41,4 +41,4 @@ class BotClient:
                 offset = update.uid + 1
 
     def send_text(self, chat_id, text):
-        requests.post(f'{self.token}/sendMessage', data={'chat_id': chat_id, 'text': text})
+        requests.post(f'{self.bot_url}/sendMessage', data={'chat_id': chat_id, 'text': text})
