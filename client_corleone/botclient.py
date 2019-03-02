@@ -2,7 +2,7 @@ import logging
 import requests
 import time
 
-from serializers import UpdateSerializer
+from client_corleone.serializers import UpdateSerializer
 
 
 logger = logging.getLogger('client')

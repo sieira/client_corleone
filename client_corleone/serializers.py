@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from models import Chat, Message, Update
+from client_corleone.models import Chat, Message, Update
 
 
 class Serializer:
