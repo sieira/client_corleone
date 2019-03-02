@@ -13,12 +13,5 @@ setup(
     install_requires=['requests'],
     include_package_data=True,
     url='https://github.com/sieira/client_corleone',
-    classifiers=[
-        "Development Status :: Messy",
-        "License :: BSD",
-        "Natural Language :: Spanish, French, and English",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Topic :: Communications",
-    ],
+    license='BSD',
 )

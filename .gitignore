@@ -1,1 +1,4 @@
 __pycache__/
+Client_Corleone.egg-info
+dist
+*.pyc
