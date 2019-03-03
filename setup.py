@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 import client_corleone
 
 setup(
-    name='Client Corleone',
+    name='client_corleone',
     version=client_corleone.__version__,
     packages=find_packages(),
     author='Luis Sieira',
