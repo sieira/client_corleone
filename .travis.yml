@@ -1,0 +1,9 @@
+dist: xenial
+install:
+  - pip install tox-travis
+language: python
+python:
+  - 3.8-dev
+script:
+  - tox
+sudo: false
