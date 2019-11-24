@@ -1,9 +1,25 @@
 dist: xenial
 install:
-  - pip install tox-travis
+  - pip install .
+  - pip install -r tests/test_requirements.txt
 language: python
 python:
   - 3.8-dev
-script:
-  - tox
+jobs:
+  include:
+    - stage: "Testing"
+      name: "Pylint"
+      script: pylint client_corleone
+    - name: "Pycodestyle"
+      script: pycodestyle client_corleone
+    - name: "Pydocstyle"
+      script: pydocstyle client_corleone
+    - name: "Unit testing"
+      before_script:
+        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        - chmod +x ./cc-test-reporter
+        - ./cc-test-reporter before-build
+      script: coverage run tests/test_runner.py || true && coverage xml
+      after_script:
+        - ./cc-test-reporter after-build -t cobertura --exit-code $TRAVIS_TEST_RESULT
 sudo: false

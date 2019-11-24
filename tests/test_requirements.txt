@@ -1,2 +1,4 @@
-pylint
+coverage
 pycodestyle
+pydocstyle
+pylint
