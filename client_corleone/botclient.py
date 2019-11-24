@@ -1,6 +1,8 @@
-"""This is the main entrypoint of client_corleone it contains the BotClient
-class that will allow you to receive updates from your telegram bot
-in a pythonic style."""
+"""This is the main entrypoint of client_corleone.
+
+It contains the BotClient class that will allow you to receive updates from your telegram bot
+in a pythonic style.
+"""
 import logging
 import time
 
@@ -14,17 +16,22 @@ LOGGER = logging.getLogger('client')
 
 class BotClient:
     """This class allows you to get udpates from your bot, as well as send messages through it."""
+
     def __init__(self, token, max_retries=None):
-        """Token is the one the bot father gave you
-        max_retries will give you the oportunity to call again your bot, first 1s, then 2, 4, 8...
-        up to n^2, indeed, don't set the bar too high, for you will regret it.
+        """Instantiate a BotClient.
+
+        * token: The one the bot father gave you
+        * max_retries: Will give you the oportunity to call again your bot, first 1s,
+        then 2, 4, 8... up to n^2, indeed, don't set the bar too high, for you will regret it.
         """
         self.bot_url = f'https://api.telegram.org/bot{token}'
         self.max_retries = max_retries
 
     def updates(self):
-        """Returns a generator. It contains an infinite loop, don't try to do fancy style like
-        list(client.updates(), for you will wait like forever to get it done.
+        """Return a generator of updates.
+
+        It contains an infinite loop, don't try to do fancy style like list(client.updates(),
+        for you will wait like forever to get it done.
 
         You are supposed to use it as:
 
@@ -58,5 +65,5 @@ class BotClient:
                 offset = update.uid + 1
 
     def send_text(self, chat_id, text):
-        """Send a message with the given text to the chat identified by chat_id"""
+        """Send a message with the given text to the chat identified by chat_id."""
         requests.post(f'{self.bot_url}/sendMessage', data={'chat_id': chat_id, 'text': text})
