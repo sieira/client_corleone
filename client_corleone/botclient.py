@@ -27,6 +27,21 @@ class BotClient:
         self.bot_url = f'https://api.telegram.org/bot{token}'
         self.max_retries = max_retries
 
+    def _get_updates(self, offset, retries):
+        try:
+            raw_updates = requests.get(f'{self.bot_url}/getUpdates?offset={offset}').json()
+            if not raw_updates.get('ok'):
+                LOGGER.error('Updates NOK')
+                raise ConnectionError('Updates NOK')
+            return raw_updates
+        except ConnectionError:
+            LOGGER.error('Connection error')
+            if retries:
+                retries -= 1
+                # Waits: 1s, 2s, 4s, 8s...
+                time.sleep((self.max_retries - retries) ** 2)
+                self._get_updates(offset, retries - 1)
+
     def updates(self):
         """Return a generator of updates.
 
@@ -39,25 +54,9 @@ class BotClient:
             Do the stuff
         """
         offset = 0
-        retries = self.max_retries
 
         while True:
-            try:
-                raw_updates = requests.get(f'{self.bot_url}/getUpdates?offset={offset}').json()
-                if not raw_updates.get('ok'):
-                    LOGGER.error('Updates NOK')
-                    raise ConnectionError('Updates NOK')
-            except ConnectionError:
-                LOGGER.error('Connection error')
-                if retries:
-                    retries -= 1
-                    # Waits: 1s, 2s, 4s, 8s...
-                    time.sleep((self.max_retries - retries) ** 2)
-                    continue
-                return
-
-            retries = self.max_retries
-
+            raw_updates = self._get_updates(offset, self.max_retries)
             updates = UpdateSerializer(raw_updates['result'], many=True).data
 
             for update in updates:
